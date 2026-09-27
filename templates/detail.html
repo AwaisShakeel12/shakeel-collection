@@ -1,0 +1,624 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>{{ product.name }} — Shakeel Collection</title>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700;800&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#ffffff; --ink:#0e0e10; --muted:#6b7280;
+    --orange-1:#ff8a3d; --orange-2:#ff5a1f;
+    --grad: linear-gradient(135deg,#ff8a3d 0%, #ff5a1f 100%);
+    --grad-soft: linear-gradient(135deg,#fff3e8 0%, #ffe1cc 100%);
+    --shadow-sm:0 6px 20px rgba(255,90,31,.08);
+    --shadow-md:0 20px 40px rgba(255,90,31,.12);
+    --shadow-lg:0 30px 60px rgba(14,14,16,.12);
+    --radius:22px;
+  }
+  html,body{scroll-behavior:smooth}
+  body{font-family:'Inter',sans-serif;color:var(--ink);background:var(--bg);overflow-x:hidden}
+  h1,h2,h3,.serif{font-family:'Playfair Display',serif;letter-spacing:-.01em}
+  a{text-decoration:none;color:inherit}
+  .btn-grad{background:var(--grad);color:#fff;border:0;border-radius:999px;padding:.9rem 1.7rem;font-weight:600;box-shadow:0 10px 25px rgba(255,90,31,.35);transition:.3s}
+  .btn-grad:hover{transform:translateY(-3px);box-shadow:0 18px 35px rgba(255,90,31,.45);color:#fff}
+  .btn-grad:disabled{opacity:.55;transform:none}
+  .btn-ghost{background:rgba(255,255,255,.85);backdrop-filter:blur(10px);border:1.5px solid rgba(14,14,16,.08);border-radius:999px;padding:.85rem 1.5rem;font-weight:600;color:var(--ink)}
+  .btn-ghost:hover{border-color:var(--orange-2);color:var(--orange-2)}
+  .btn-wa-solid{background:#25d366;color:#fff;border:0;border-radius:999px;padding:.9rem 1.7rem;font-weight:600;box-shadow:0 10px 25px rgba(37,211,102,.35);transition:.3s}
+  .btn-wa-solid:hover{background:#1fb855;color:#fff;transform:translateY(-3px)}
+  .eyebrow{display:inline-flex;align-items:center;gap:.5rem;font-size:.78rem;font-weight:600;letter-spacing:.18em;text-transform:uppercase;padding:.5rem 1rem;border-radius:999px;background:var(--grad-soft);color:var(--orange-2)}
+  .eyebrow i{font-size:.5rem}
+  .section{padding:90px 0;position:relative}
+  .section-title{font-weight:800;font-size:clamp(1.8rem,3.5vw,2.8rem);line-height:1.1}
+
+  /* ===== NAVBAR (same as home) ===== */
+  .navbar-ns{position:fixed;top:0;left:0;right:0;z-index:1050;transition:all .35s ease;background:rgba(255,255,255,.75);backdrop-filter:blur(18px);border-bottom:1px solid transparent}
+  .navbar-ns.scrolled{background:rgba(255,255,255,.92);box-shadow:0 10px 30px rgba(14,14,16,.06);border-bottom:1px solid rgba(14,14,16,.05)}
+  .navbar-ns .navbar-brand{font-family:'Playfair Display',serif;font-weight:800;font-size:1.6rem}
+  .brand-ns{background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent}
+  .navbar-ns .nav-link{position:relative;color:var(--ink);font-weight:500;padding:.5rem 1rem !important;transition:.25s color}
+  .navbar-ns .nav-link::after{content:"";position:absolute;left:50%;bottom:0;transform:translateX(-50%);width:0;height:2px;background:var(--grad);transition:.3s width;border-radius:2px}
+  .navbar-ns .nav-link:hover::after,.navbar-ns .nav-link.active::after{width:60%}
+  .navbar-ns .nav-link:hover{color:var(--orange-2)}
+  .nav-icon-btn{width:42px;height:42px;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;background:rgba(255,138,61,.08);color:var(--ink);position:relative;transition:.3s}
+  .nav-icon-btn:hover{background:var(--grad);color:#fff;transform:translateY(-2px)}
+  .nav-icon-btn .badge-dot{position:absolute;top:4px;right:2px;min-width:18px;height:18px;border-radius:50%;background:var(--grad);color:#fff;font-size:.65rem;display:flex;align-items:center;justify-content:center;padding:0 4px;font-weight:700}
+  .navbar-toggler{border:0;padding:.4rem .6rem;box-shadow:none}
+  .navbar-toggler:focus{box-shadow:none}
+  .navbar-toggler-icon{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3E%3Cpath stroke='%23ff5a1f' stroke-linecap='round' stroke-width='2.5' d='M4 8h22M4 15h22M4 22h22'/%3E%3C/svg%3E")}
+  @media(max-width:991px){.navbar-ns .navbar-collapse{background:#fff;border-radius:18px;padding:1rem;margin-top:.8rem;box-shadow:var(--shadow-md)}}
+
+  /* ===== BREADCRUMB ===== */
+  .crumbs{display:flex;align-items:center;gap:10px;flex-wrap:wrap;font-size:.85rem;font-weight:500;margin-bottom:34px}
+  .crumbs a{color:var(--muted);transition:.25s}
+  .crumbs a:hover{color:var(--orange-2)}
+  .crumbs .sep{color:#d1d5db}
+  .crumbs .current{color:var(--ink);font-weight:600;max-width:220px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+
+  /* ===== DETAIL HERO ===== */
+  .detail-hero{padding:130px 0 60px;background:radial-gradient(900px 500px at 90% 0%,#ffe1cc 0%,transparent 60%),radial-gradient(700px 400px at -10% 100%,#fff1e3 0%,transparent 55%),#fff}
+
+  /* Gallery */
+  .gallery-main{position:relative;border-radius:32px;overflow:hidden;aspect-ratio:4/5;box-shadow:var(--shadow-lg);background:#f6f6f6}
+  .gallery-main img{width:100%;height:100%;object-fit:cover;transition:transform .8s ease}
+  .gallery-main:hover img{transform:scale(1.05)}
+  .pd-badge{position:absolute;top:18px;left:18px;padding:8px 16px;border-radius:999px;font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.1em;background:#fff;box-shadow:var(--shadow-sm)}
+  .pd-badge.sale{background:var(--grad);color:#fff}
+  .pd-badge.sold{background:var(--ink);color:#fff}
+  .gallery-chip{position:absolute;left:18px;bottom:18px;background:rgba(255,255,255,.95);backdrop-filter:blur(10px);padding:12px 16px;border-radius:16px;display:flex;gap:10px;align-items:center;font-size:.85rem;font-weight:600}
+  .gallery-chip i{color:var(--orange-2);font-size:1.2rem}
+  .thumb-row{display:flex;gap:12px;margin-top:14px;overflow-x:auto;padding-bottom:6px}
+  .thumb{flex:0 0 auto;width:88px;height:104px;border-radius:16px;overflow:hidden;border:2px solid transparent;background:#f6f6f6;padding:0;transition:.3s}
+  .thumb img{width:100%;height:100%;object-fit:cover}
+  .thumb:hover{transform:translateY(-3px)}
+  .thumb.active{border-color:var(--orange-2);box-shadow:var(--shadow-sm)}
+
+  /* Info panel */
+  .pd-title{font-size:clamp(2rem,4vw,3.2rem);font-weight:800;line-height:1.05}
+  .pd-rating{color:#ffb400;font-size:.9rem}
+  .pd-rating span{color:var(--muted)}
+  .price-panel{background:var(--grad-soft);border-radius:24px;padding:24px 28px;margin:26px 0;display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap}
+  .price-now{font-family:'Playfair Display';font-weight:800;font-size:2.4rem;line-height:1;background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent}
+  .price-old{color:var(--muted);text-decoration:line-through;font-size:1.05rem;font-weight:400}
+  .sale-tag{background:var(--grad);color:#fff;font-size:.7rem;font-weight:700;letter-spacing:.12em;padding:6px 12px;border-radius:999px;text-transform:uppercase}
+  .soldout-banner{background:#fff3f3;border:1.5px dashed #ef4444;color:#ef4444;border-radius:18px;padding:14px 18px;font-weight:600;text-align:center;margin-bottom:20px}
+  .qty-stepper{display:inline-flex;align-items:center;gap:0;background:#fff;border:1.5px solid rgba(14,14,16,.1);border-radius:999px;overflow:hidden}
+  .qty-stepper button{width:44px;height:52px;border:0;background:transparent;font-size:1.2rem;color:var(--ink);transition:.2s}
+  .qty-stepper button:hover{background:var(--grad-soft);color:var(--orange-2)}
+  .qty-stepper span{min-width:38px;text-align:center;font-weight:700}
+  .trust-pills{display:flex;gap:10px;flex-wrap:wrap;margin-top:28px}
+  .trust-pill{display:inline-flex;align-items:center;gap:8px;background:#fff;border:1px solid rgba(14,14,16,.06);border-radius:999px;padding:9px 16px;font-size:.8rem;font-weight:600;color:#374151;box-shadow:var(--shadow-sm)}
+  .trust-pill i{color:var(--orange-2)}
+  .pd-meta{margin-top:26px;padding-top:22px;border-top:1px solid rgba(14,14,16,.07);font-size:.85rem;color:var(--muted)}
+  .pd-meta strong{color:var(--ink);font-weight:600}
+
+  /* ===== DESCRIPTION PANEL ===== */
+  .desc-panel{background:#fff;border:1px solid rgba(14,14,16,.05);border-radius:32px;padding:50px;box-shadow:0 10px 40px rgba(14,14,16,.05);position:relative;overflow:hidden}
+  .desc-panel::before{content:"";position:absolute;top:-60px;right:-60px;width:220px;height:220px;background:var(--grad);opacity:.08;border-radius:50%;filter:blur(10px)}
+  .desc-icon{width:58px;height:58px;border-radius:18px;background:var(--grad);color:#fff;display:inline-flex;align-items:center;justify-content:center;font-size:1.4rem;box-shadow:0 14px 28px rgba(255,90,31,.28);margin-bottom:20px}
+  .desc-text{color:#374151;font-size:1.02rem;line-height:1.85;white-space:pre-line;max-width:820px}
+  .btn-ext{display:inline-flex;align-items:center;gap:10px;margin-top:26px;background:var(--ink);color:#fff;border-radius:999px;padding:.85rem 1.6rem;font-weight:600;transition:.3s}
+  .btn-ext:hover{background:var(--orange-2);color:#fff;transform:translateY(-3px)}
+
+  /* ===== SERVICES STRIP (same as home) ===== */
+  .services-wrap{position:relative;border-radius:36px;padding:60px 44px;background:linear-gradient(135deg,#fff7f0 0%,#ffe6d3 100%);overflow:hidden}
+  .services-wrap::before{content:"";position:absolute;right:-80px;top:-80px;width:300px;height:300px;background:var(--grad);opacity:.12;border-radius:50%;filter:blur(20px)}
+  .service-tile{position:relative;padding:30px 24px;border-radius:24px;background:#fff;transition:.35s;height:100%;border:1px solid rgba(14,14,16,.04)}
+  .service-tile:hover{transform:translateY(-6px);box-shadow:var(--shadow-md)}
+  .service-tile .st-num{font-family:'Playfair Display';font-weight:800;font-size:2.6rem;line-height:1;background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent;opacity:.25;position:absolute;top:12px;right:18px}
+  .service-tile .st-icon{width:56px;height:56px;border-radius:18px;background:var(--grad);color:#fff;display:inline-flex;align-items:center;justify-content:center;font-size:1.35rem;margin-bottom:16px;box-shadow:0 14px 28px rgba(255,90,31,.28)}
+  .service-tile h4{font-weight:700;font-size:1.1rem;margin-bottom:6px}
+  .service-tile p{color:var(--muted);font-size:.88rem;margin:0}
+
+  /* ===== NEWSLETTER (same as home) ===== */
+  .newsletter{background:var(--grad);border-radius:36px;padding:56px 48px;color:#fff;position:relative;overflow:hidden}
+  .newsletter::before{content:"";position:absolute;width:420px;height:420px;border-radius:50%;background:rgba(255,255,255,.08);top:-180px;right:-120px}
+  .newsletter::after{content:"";position:absolute;width:260px;height:260px;border-radius:50%;background:rgba(255,255,255,.08);bottom:-100px;left:-80px}
+  .newsletter form{position:relative;z-index:2}
+  .newsletter .form-control{background:rgba(255,255,255,.15);border:1.5px solid rgba(255,255,255,.25);color:#fff;border-radius:999px;padding:1rem 1.4rem;backdrop-filter:blur(8px)}
+  .newsletter .form-control::placeholder{color:rgba(255,255,255,.75)}
+  .newsletter .form-control:focus{box-shadow:none;background:rgba(255,255,255,.22);border-color:#fff;color:#fff}
+  .newsletter .btn-sub{background:#fff;color:var(--orange-2);border-radius:999px;padding:.95rem 1.8rem;font-weight:700}
+  .newsletter .btn-sub:hover{background:var(--ink);color:#fff}
+
+  /* ===== FOOTER (same as home) ===== */
+  footer{background:#0e0e10;color:#d1d5db;padding:80px 0 30px;margin-top:90px}
+  footer h5{color:#fff;font-weight:600;margin-bottom:18px;font-size:1rem}
+  footer a{color:#9ca3af;transition:.25s}
+  footer a:hover{color:#ffb07a}
+  .footer-brand{font-family:'Playfair Display';font-weight:800;font-size:1.7rem;background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent}
+  .socials a{width:40px;height:40px;border-radius:50%;background:rgba(255,255,255,.06);display:inline-flex;align-items:center;justify-content:center;margin-right:8px;color:#d1d5db}
+  .socials a:hover{background:var(--grad);color:#fff;transform:translateY(-3px)}
+  .footer-bottom{border-top:1px solid rgba(255,255,255,.08);margin-top:50px;padding-top:22px;font-size:.85rem;color:#9ca3af}
+
+  /* ===== FLOATING WHATSAPP ===== */
+  .wa-float{position:fixed;right:22px;bottom:22px;z-index:1040;width:60px;height:60px;border-radius:50%;background:#25d366;color:#fff;display:flex;align-items:center;justify-content:center;font-size:1.8rem;box-shadow:0 14px 30px rgba(37,211,102,.45);animation:pulse 2.2s infinite}
+  @keyframes pulse{0%,100%{box-shadow:0 14px 30px rgba(37,211,102,.45)}50%{box-shadow:0 14px 40px rgba(37,211,102,.75)}}
+  .wa-float:hover{color:#fff;transform:scale(1.07)}
+
+  /* ===== MOBILE STICKY ACTION BAR ===== */
+  .mobile-bar{position:fixed;left:0;right:0;bottom:0;z-index:1030;background:rgba(255,255,255,.96);backdrop-filter:blur(16px);border-top:1px solid rgba(14,14,16,.07);padding:12px 16px;display:flex;align-items:center;gap:10px;box-shadow:0 -12px 30px rgba(14,14,16,.08)}
+  .mobile-bar .mb-price small{display:block;color:var(--muted);font-size:.68rem;text-transform:uppercase;letter-spacing:.1em}
+  .mobile-bar .mb-price strong{font-family:'Playfair Display';font-size:1.15rem;background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent}
+  @media(min-width:992px){.mobile-bar{display:none}}
+  @media(max-width:991px){footer{padding-bottom:110px}.wa-float{bottom:92px}}
+
+  /* Reveal on scroll */
+  .reveal{opacity:0;transform:translateY(30px);transition:.8s cubic-bezier(.2,.7,.2,1)}
+  .reveal.show{opacity:1;transform:translateY(0)}
+
+  /* ===== CART DRAWER & ITEMS ===== */
+  .offcanvas-cart{border:0;width:400px !important}
+  .offcanvas-cart .offcanvas-header{border-bottom:1px solid rgba(0,0,0,.06)}
+  .cart-item{display:flex;gap:14px;padding:14px 0;border-bottom:1px solid rgba(0,0,0,.06);align-items:center}
+  .cart-item img{width:64px;height:78px;min-width:64px;max-width:64px;min-height:78px;max-height:78px;object-fit:cover;border-radius:12px;background:#f8f9fa;flex-shrink:0}
+  .cart-item h6{font-size:.95rem;margin:0 0 4px;font-weight:600}
+  .cart-item small{color:var(--muted)}
+  .cart-total{font-family:'Playfair Display';font-weight:800;font-size:1.5rem}
+  .qty-row{display:inline-flex;align-items:center;gap:10px;margin-top:6px}
+  .qty-row button{width:26px;height:26px;border-radius:8px;border:1px solid rgba(0,0,0,.1);background:#fff;line-height:1;font-weight:700;display:flex;align-items:center;justify-content:center;padding:0;transition:.2s}
+  .qty-row button:hover{background:var(--grad-soft);border-color:var(--orange-2);color:var(--orange-2)}
+
+  @media(max-width:767px){
+    .detail-hero{padding-top:110px}
+    .desc-panel{padding:30px 22px}
+    .services-wrap{padding:36px 20px}
+    .newsletter{padding:38px 22px;border-radius:26px}
+    .offcanvas-cart{width:100% !important}
+  }
+</style>
+</head>
+<body>
+
+<!-- ============ NAVBAR ============ -->
+<nav class="navbar navbar-expand-lg navbar-ns py-3" id="mainNav">
+  <div class="container">
+    <a class="navbar-brand d-flex align-items-center gap-2" href="/">
+      <span class="brand-ns">Shakeel</span><span>Collection</span>
+    </a>
+    <div class="d-flex align-items-center gap-2 order-lg-last ms-auto ms-lg-0">
+      <button class="nav-icon-btn" type="button" data-bs-toggle="offcanvas" data-bs-target="#cartDrawer" title="My Bag">
+        <i class="bi bi-bag"></i><span class="badge-dot" id="cartCount">0</span>
+      </button>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navMain">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+    </div>
+    <div class="collapse navbar-collapse order-lg-1" id="navMain">
+      <ul class="navbar-nav mx-auto mb-2 mb-lg-0">
+        <li class="nav-item"><a class="nav-link" href="/">Home</a></li>
+        <li class="nav-item"><a class="nav-link {% if product.category_name == 'Jewelry' %}active{% endif %}" href="/category/jewelry">Jewelry</a></li>
+        <li class="nav-item"><a class="nav-link {% if product.category_name == 'Clothing' %}active{% endif %}" href="/category/clothing">Clothing</a></li>
+        <li class="nav-item"><a class="nav-link {% if product.category_name not in ['Jewelry', 'Clothing'] %}active{% endif %}" href="/category/other-top-items">Lifestyle</a></li>
+        
+        <li class="nav-item"><a class="nav-link" href="/#contact">Contact</a></li>
+      </ul>
+      <a href="/#featured-sections" class="btn btn-grad d-none d-lg-inline-flex">Shop Now</a>
+    </div>
+  </div>
+</nav>
+
+<!-- ============ PRODUCT DETAIL HERO ============ -->
+<section class="detail-hero">
+  <div class="container">
+
+    <!-- Breadcrumb -->
+    <nav class="crumbs reveal">
+      <a href="/"><i class="bi bi-house-door me-1"></i>Home</a>
+      <span class="sep"><i class="bi bi-chevron-right"></i></span>
+      <a href="/category/{{ (product.category_name|lower|replace(' ', '-')) if product.category_name else 'jewelry' }}">{{ product.category_name or 'Collection' }}</a>
+      <span class="sep"><i class="bi bi-chevron-right"></i></span>
+      <span class="current">{{ product.name }}</span>
+    </nav>
+
+    <div class="row g-5">
+      <!-- ===== GALLERY ===== -->
+      <div class="col-lg-6 reveal">
+        <div class="gallery-main">
+          {% if product.is_sold %}
+            <span class="pd-badge sold">Sold Out</span>
+          {% elif product.discount_price %}
+            <span class="pd-badge sale">Sale</span>
+          {% else %}
+            <span class="pd-badge">Featured</span>
+          {% endif %}
+          <img id="mainImg"
+               src="{{ product.image or product.image_url or (product.images[0] if (product.images and product.images is iterable and product.images is not string) else '') or 'https://images.unsplash.com/photo-1611652022419-a9419f74343d?w=900&q=80' }}"
+               alt="{{ product.name }}"
+               onerror="this.src='https://images.unsplash.com/photo-1611652022419-a9419f74343d?w=900&q=80'">
+          <div class="gallery-chip"><i class="bi bi-patch-check-fill"></i> Certified &amp; Inspected</div>
+        </div>
+        {% if product.images and product.images is iterable and product.images is not string and product.images|length > 1 %}
+        <div class="thumb-row">
+          {% for img in product.images %}
+          <button type="button" class="thumb {% if loop.first %}active{% endif %}" data-img="{{ img }}">
+            <img src="{{ img }}" alt="{{ product.name }} — view {{ loop.index }}">
+          </button>
+          {% endfor %}
+        </div>
+        {% endif %}
+      </div>
+
+      <!-- ===== INFO ===== -->
+      <div class="col-lg-6 reveal">
+        <span class="eyebrow"><i class="bi bi-circle-fill"></i> {{ product.category_name }}</span>
+        <h1 class="pd-title mt-3">{{ product.name }}</h1>
+        <div class="pd-rating mt-3">
+          ★★★★★ <span>4.9 · Verified Shakeel Collection Piece</span>
+        </div>
+
+        <!-- Price -->
+        <div class="price-panel">
+          <div>
+            {% if product.discount_price %}
+              <span class="price-old me-2">{{ product.original_price }}</span>
+              <span class="price-now">{{ product.display_price }}</span>
+            {% else %}
+              <span class="price-now">{{ product.display_price }}</span>
+            {% endif %}
+          </div>
+          {% if product.discount_price %}<span class="sale-tag"><i class="bi bi-lightning-fill me-1"></i>Sale</span>{% endif %}
+        </div>
+
+        <!-- Sold out notice -->
+        {% if product.is_sold %}
+        <div class="soldout-banner">
+          <i class="bi bi-exclamation-circle me-2"></i> This item is currently <strong>SOLD OUT</strong>. Message us to get notified when it returns.
+        </div>
+        {% endif %}
+
+        <!-- Actions -->
+        <div class="d-flex align-items-center gap-3 flex-wrap">
+          {% if not product.is_sold %}
+          <div class="qty-stepper">
+            <button type="button" onclick="changeQty(-1)"><i class="bi bi-dash"></i></button>
+            <span id="qtyVal">1</span>
+            <button type="button" onclick="changeQty(1)"><i class="bi bi-plus"></i></button>
+          </div>
+          <input type="hidden" name="quantity" id="quantity" value="1">
+          <button type="button" class="btn btn-grad" id="btnAddToCartDetail" onclick="addDetailToCart()">
+            <i class="bi bi-bag-plus me-2"></i>Add to Cart
+          </button>
+          {% else %}
+          <button type="button" class="btn btn-grad" disabled><i class="bi bi-x-circle me-2"></i>Sold Out</button>
+          {% endif %}
+        </div>
+
+        <a href="https://wa.me/923346015655?text={{ ('Hi! I am interested in ' ~ product.name ~ ' (' ~ product.display_price ~ ') from Shakeel Collection.') | urlencode }}"
+           target="_blank" class="btn btn-wa-solid mt-3">
+          <i class="bi bi-whatsapp me-2"></i>{% if product.is_sold %}Ask About This Item{% else %}Buy on WhatsApp{% endif %}
+        </a>
+
+        {% if product.external_link %}
+        <a href="{{ product.external_link }}" target="_blank" class="btn btn-ghost mt-3 ms-lg-2">
+          <i class="bi bi-box-arrow-up-right me-2"></i>View External Link
+        </a>
+        {% endif %}
+
+        <!-- Trust pills -->
+        <div class="trust-pills">
+          <span class="trust-pill"><i class="bi bi-truck"></i> Free Shipping</span>
+          <span class="trust-pill"><i class="bi bi-arrow-repeat"></i> 30-Day Returns</span>
+          <span class="trust-pill"><i class="bi bi-shield-check"></i> Authenticity</span>
+          <span class="trust-pill"><i class="bi bi-gift"></i> Gift Wrapping</span>
+        </div>
+
+        <!-- Meta -->
+        <div class="pd-meta">
+          <div class="row g-3">
+            <div class="col-sm-4"><strong>Category</strong><br>{{ product.category_name }}</div>
+            <div class="col-sm-4"><strong>Availability</strong><br>{% if product.is_sold %}<span class="text-danger">Sold Out</span>{% else %}<span class="text-success">In Stock</span>{% endif %}</div>
+            <div class="col-sm-4"><strong>Condition</strong><br>Brand New · Handpicked</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ DESCRIPTION ============ -->
+<section class="section">
+  <div class="container">
+    <div class="desc-panel reveal">
+      <div class="desc-icon"><i class="bi bi-journal-richtext"></i></div>
+      <h2 class="section-title mb-1">Product Description</h2>
+      <p class="text-muted mb-4">The story behind this piece.</p>
+      <div class="desc-text">{{ product.description or "No detailed description available for this item." }}</div>
+      {% if product.external_link %}
+      <a href="{{ product.external_link }}" target="_blank" class="btn-ext">
+        <i class="bi bi-box-arrow-up-right"></i> View External Link
+      </a>
+      {% endif %}
+    </div>
+  </div>
+</section>
+
+<!-- ============ SERVICES STRIP ============ -->
+<section class="section pt-0">
+  <div class="container">
+    <div class="services-wrap">
+      <div class="row g-4 align-items-end mb-4 reveal">
+        <div class="col-lg-7"><h2 class="section-title">Shop with complete peace of mind.</h2></div>
+        <div class="col-lg-5"><p class="text-muted mb-0">Every Shakeel Collection order is covered by our concierge-level service promise.</p></div>
+      </div>
+      <div class="row g-4">
+        <div class="col-md-6 col-lg-3 reveal">
+          <div class="service-tile"><span class="st-num">01</span>
+            <div class="st-icon"><i class="bi bi-truck"></i></div>
+            <h4>Express Shipping</h4><p>Free global delivery in 2-5 business days, tracked &amp; insured.</p>
+          </div>
+        </div>
+        <div class="col-md-6 col-lg-3 reveal">
+          <div class="service-tile"><span class="st-num">02</span>
+            <div class="st-icon"><i class="bi bi-gift"></i></div>
+            <h4>Gift Wrapping</h4><p>Premium signature packaging with personalization on request.</p>
+          </div>
+        </div>
+        <div class="col-md-6 col-lg-3 reveal">
+          <div class="service-tile"><span class="st-num">03</span>
+            <div class="st-icon"><i class="bi bi-arrow-repeat"></i></div>
+            <h4>Easy Returns</h4><p>Hassle-free 30-day returns with free pickup worldwide.</p>
+          </div>
+        </div>
+        <div class="col-md-6 col-lg-3 reveal">
+          <div class="service-tile"><span class="st-num">04</span>
+            <div class="st-icon"><i class="bi bi-headset"></i></div>
+            <h4>24/7 Styling</h4><p>Chat with our stylists anytime — personal advice, zero pressure.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ NEWSLETTER ============ -->
+<section class="section pt-0">
+  <div class="container">
+    <div class="newsletter reveal">
+      <div class="row align-items-center g-4">
+        <div class="col-lg-6">
+          <h2 class="serif" style="font-weight:800;font-size:clamp(1.8rem,3vw,2.6rem)">Join the NS Inner Circle.</h2>
+          <p class="mb-0 mt-2" style="opacity:.9">Get 10% off your first order and early access to new drops.</p>
+        </div>
+        <div class="col-lg-6">
+          <form onsubmit="event.preventDefault();alert('Thanks for subscribing! 🎉');">
+            <div class="input-group">
+              <input type="email" required class="form-control" placeholder="your@email.com">
+              <button class="btn btn-sub" type="submit">Subscribe</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ FOOTER ============ -->
+<footer>
+  <div class="container">
+    <div class="row g-4">
+      <div class="col-lg-4">
+        <div class="footer-brand mb-3">Shakeel Collection</div>
+        <p style="color:#9ca3af;max-width:340px">A modern luxury house curating jewelry, clothing and lifestyle essentials for the global connoisseur.</p>
+        <div class="socials mt-3">
+          <a href="#"><i class="bi bi-instagram"></i></a>
+          <a href="#"><i class="bi bi-facebook"></i></a>
+          <a href="#"><i class="bi bi-tiktok"></i></a>
+          <a href="#"><i class="bi bi-pinterest"></i></a>
+        </div>
+      </div>
+      <div class="col-6 col-lg-2">
+        <h5>Shop</h5>
+        <ul class="list-unstyled">
+          <li class="mb-2"><a href="/category/jewelry">Jewelry</a></li>
+          <li class="mb-2"><a href="/category/clothing">Clothing</a></li>
+          <li class="mb-2"><a href="/category/other-top-items">Lifestyle</a></li>
+          <li class="mb-2"><a href="/cart">My Bag</a></li>
+        </ul>
+      </div>
+      <div class="col-6 col-lg-2">
+        <h5>Help</h5>
+        <ul class="list-unstyled">
+          <li class="mb-2"><a href="/#services">Shipping</a></li>
+          <li class="mb-2"><a href="/#services">Returns</a></li>
+          <li class="mb-2"><a href="/#services">Size Guide</a></li>
+          <li class="mb-2"><a href="/admin">Admin Area</a></li>
+        </ul>
+      </div>
+      <div class="col-lg-4">
+        <h5>Contact</h5>
+        <p class="mb-2"><i class="bi bi-geo-alt me-2 text-warning"></i> Pakistan</p>
+        <p class="mb-2"><i class="bi bi-envelope me-2 text-warning"></i> business@cluxd.com</p>
+        <p class="mb-0"><i class="bi bi-whatsapp me-2 text-warning"></i> +92 334 6015655</p>
+      </div>
+    </div>
+    <div class="footer-bottom d-flex flex-wrap justify-content-between gap-2">
+      <div>© 2025 Shakeel Collection. All rights reserved.</div>
+      <div>Crafted with <i class="bi bi-heart-fill text-danger"></i> for modern elegance.</div>
+    </div>
+  </div>
+</footer>
+
+<!-- Floating WhatsApp -->
+<a href="https://wa.me/923346015655?text={{ ('Hi! I have a question about ' ~ product.name ~ ' from Shakeel Collection.') | urlencode }}" target="_blank" class="wa-float" title="Chat on WhatsApp">
+  <i class="bi bi-whatsapp"></i>
+</a>
+
+<!-- Mobile sticky action bar -->
+<div class="mobile-bar">
+  <div class="mb-price me-auto">
+    <small>Price</small>
+    <strong>{{ product.display_price }}</strong>
+  </div>
+  {% if not product.is_sold %}
+  <button class="btn btn-grad px-3" onclick="addDetailToCart()">
+    <i class="bi bi-bag-plus me-1"></i> Add
+  </button>
+  {% endif %}
+  <a class="btn btn-wa-solid px-3" target="_blank"
+     href="https://wa.me/923346015655?text={{ ('Hi! I am interested in ' ~ product.name ~ ' (' ~ product.display_price ~ ').') | urlencode }}">
+    <i class="bi bi-whatsapp"></i>
+  </a>
+</div>
+
+<!-- Cart Drawer -->
+<div class="offcanvas offcanvas-end offcanvas-cart" id="cartDrawer" tabindex="-1">
+  <div class="offcanvas-header">
+    <h5 class="offcanvas-title fw-bold serif">Your Shopping Bag</h5>
+    <button class="btn-close" data-bs-dismiss="offcanvas"></button>
+  </div>
+  <div class="offcanvas-body">
+    <div id="cartItems"></div>
+    <div class="mt-4 border-top pt-3">
+      <div class="d-flex justify-content-between align-items-center">
+        <span class="text-muted">Subtotal</span>
+        <span class="cart-total" id="cartTotal">PKR 0</span>
+      </div>
+      <button class="btn btn-grad w-100 mt-3" onclick="checkoutWhatsApp()"><i class="bi bi-whatsapp me-2"></i>Checkout via WhatsApp</button>
+     
+      <button class="btn btn-ghost w-100 mt-2" data-bs-dismiss="offcanvas">Continue Shopping</button>
+    </div>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+/* Navbar scroll effect */
+const nav=document.getElementById('mainNav');
+window.addEventListener('scroll',()=>nav.classList.toggle('scrolled',window.scrollY>30));
+
+/* Quantity stepper */
+let qty=1;
+function changeQty(d){
+  qty=Math.max(1,qty+d);
+  document.getElementById('qtyVal').textContent=qty;
+  document.getElementById('quantity').value=qty;
+}
+
+/* Gallery thumbnails */
+document.querySelectorAll('.thumb').forEach(t=>{
+  t.addEventListener('click',()=>{
+    const main=document.getElementById('mainImg');
+    main.style.opacity=0;
+    setTimeout(()=>{main.src=t.dataset.img;main.style.transition='opacity .4s';main.style.opacity=1;},180);
+    document.querySelectorAll('.thumb').forEach(x=>x.classList.remove('active'));
+    t.classList.add('active');
+  });
+});
+
+/* ===== Cart (localStorage, synced across all pages) ===== */
+function getCart(){try{return JSON.parse(localStorage.getItem('cart')||'[]')}catch(e){return[]}}
+function saveCart(cart){localStorage.setItem('cart',JSON.stringify(cart));renderCart()}
+function parsePrice(s){if(!s)return 0;if(typeof s==='number')return s;const m=String(s).replace(/,/g,'').match(/[\d.]+/);return m?parseFloat(m[0]):0}
+function esc(s){return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;')}
+
+function renderCart(){
+  const cart=getCart();
+  const count=cart.reduce((s,c)=>s+(parseInt(c.quantity||c.qty)||1),0);
+  const countEl=document.getElementById('cartCount');
+  if(countEl)countEl.textContent=count;
+  const box=document.getElementById('cartItems');
+  if(box){
+    if(!cart.length){
+      box.innerHTML='<div class="text-center py-5"><i class="bi bi-bag-x display-4 text-muted mb-3 d-block" style="opacity:.4"></i><p class="text-muted mb-0">Your bag is empty.</p></div>';
+    }else{
+      box.innerHTML=cart.map((c,i)=>`
+        <div class="cart-item">
+          <img src="${esc(c.image||c.img||'https://via.placeholder.com/80')}" alt="${esc(c.name)}">
+          <div class="flex-grow-1">
+            <h6>${esc(c.name)}</h6>
+            <small class="text-muted">Unit: PKR ${Math.round(parsePrice(c.price)).toLocaleString()}</small>
+            <div class="qty-row mt-2">
+              <button type="button" onclick="chgQty(${i},-1)">−</button>
+              <span>${c.quantity||c.qty||1}</span>
+              <button type="button" onclick="chgQty(${i},1)">+</button>
+              <span class="fw-bold ms-auto" style="font-size:.9rem">PKR ${(Math.round(parsePrice(c.price))*(parseInt(c.quantity||c.qty)||1)).toLocaleString()}</span>
+            </div>
+          </div>
+          <button class="btn btn-sm btn-light ms-2 text-danger" onclick="removeItem(${i})" title="Remove"><i class="bi bi-trash"></i></button>
+        </div>`).join('');
+    }
+  }
+  const total=cart.reduce((s,c)=>s+parsePrice(c.price)*(parseInt(c.quantity||c.qty)||1),0);
+  const totalEl=document.getElementById('cartTotal');
+  if(totalEl)totalEl.textContent='PKR '+Math.round(total).toLocaleString();
+}
+
+function chgQty(i,d){
+  let cart=getCart();
+  if(cart[i]){
+    let q=(parseInt(cart[i].quantity||cart[i].qty)||1)+d;
+    if(q<=0)cart.splice(i,1);else{cart[i].quantity=q;cart[i].qty=q;}
+    saveCart(cart);
+  }
+}
+function removeItem(i){let cart=getCart();cart.splice(i,1);saveCart(cart)}
+
+function addDetailToCart(){
+  const curQty=parseInt(document.getElementById('quantity').value)||1;
+  const prodId={{ product.id | tojson }};
+  const prodSlug={{ product.slug | tojson }};
+  const prodName={{ product.name | tojson }};
+  const prodPrice={{ product.display_price | tojson }};
+  const prodImg={{ (product.image or product.image_url or '') | tojson }};
+  
+  let cart=getCart();
+  const itemId=prodId||prodSlug;
+  const ex=cart.find(c=>String(c.id||c.slug)===String(itemId));
+  if(ex){
+    ex.quantity=(parseInt(ex.quantity||ex.qty)||1)+curQty;
+    ex.qty=ex.quantity;
+  }else{
+    cart.push({
+      id:String(prodId||prodSlug),
+      slug:prodSlug||'',
+      name:prodName,
+      price:parsePrice(prodPrice),
+      image:prodImg,
+      img:prodImg,
+      quantity:curQty,
+      qty:curQty
+    });
+  }
+  saveCart(cart);
+  const btn=document.getElementById('btnAddToCartDetail');
+  if(btn){
+    const orig=btn.innerHTML;
+    btn.innerHTML='<i class="bi bi-check-lg me-2"></i>Added!';
+    setTimeout(()=>{btn.innerHTML=orig},1400);
+  }
+  bootstrap.Offcanvas.getOrCreateInstance('#cartDrawer').show();
+}
+
+async function checkoutWhatsApp(){
+  const cart=getCart();
+  if(!cart.length){alert('Your bag is empty.');return}
+  const payload={items:cart.map(i=>({product_id:parseInt(i.id)||0,quantity:parseInt(i.quantity||i.qty)||1}))};
+  try{
+    const res=await fetch('/api/checkout-proxy',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(payload)});
+    const d=await res.json();
+    if(d.whatsapp_link){window.open(d.whatsapp_link,'_blank');return}
+  }catch(e){}
+  const total=cart.reduce((s,c)=>s+parsePrice(c.price)*(parseInt(c.quantity||c.qty)||1),0);
+  let msg='Hi! I would like to order from Shakeel Collection:\n\n';
+  cart.forEach(c=>{
+    const q=parseInt(c.quantity||c.qty)||1;
+    const p=Math.round(parsePrice(c.price));
+    msg+='• '+c.name+' x'+q+' — PKR '+(p*q).toLocaleString()+'\n';
+  });
+  msg+='\nTotal: PKR '+Math.round(total).toLocaleString();
+  window.open('https://wa.me/923346015655?text='+encodeURIComponent(msg),'_blank');
+}
+renderCart();
+
+/* Reveal on scroll */
+const io=new IntersectionObserver(es=>{
+  es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('show');io.unobserve(e.target)}});
+},{threshold:.12});
+document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
+</script>
+</body>
+</html>
