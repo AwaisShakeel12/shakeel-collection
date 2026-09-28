@@ -272,30 +272,35 @@
 
         <!-- Actions -->
         <div class="d-flex align-items-center gap-3 flex-wrap">
-          {% if not product.is_sold %}
-          <div class="qty-stepper">
-            <button type="button" onclick="changeQty(-1)"><i class="bi bi-dash"></i></button>
-            <span id="qtyVal">1</span>
-            <button type="button" onclick="changeQty(1)"><i class="bi bi-plus"></i></button>
-          </div>
-          <input type="hidden" name="quantity" id="quantity" value="1">
-          <button type="button" class="btn btn-grad" id="btnAddToCartDetail" onclick="addDetailToCart()">
-            <i class="bi bi-bag-plus me-2"></i>Add to Cart
-          </button>
-          {% else %}
-          <button type="button" class="btn btn-grad" disabled><i class="bi bi-x-circle me-2"></i>Sold Out</button>
-          {% endif %}
-        </div>
-
-        <a href="https://wa.me/923346015655?text={{ ('Hi! I am interested in ' ~ product.name ~ ' (' ~ product.display_price ~ ') from Shakeel Collection.') | urlencode }}"
-           target="_blank" class="btn btn-wa-solid mt-3">
-          <i class="bi bi-whatsapp me-2"></i>{% if product.is_sold %}Ask About This Item{% else %}Buy on WhatsApp{% endif %}
-        </a>
-
-        {% if product.external_link %}
-        <a href="{{ product.external_link }}" target="_blank" class="btn btn-ghost mt-3 ms-lg-2">
-          <i class="bi bi-box-arrow-up-right me-2"></i>View External Link
-        </a>
+                  {% if product.external_link %}
+            <!-- EXTERNAL AFFILIATE LINK MODE -->
+            <a href="{{ product.external_link }}" target="_blank" class="btn btn-grad w-100 py-3 mb-2 fw-bold">
+                <i class="bi bi-box-arrow-up-right me-2"></i> Buy on External Store
+            </a>
+            <button class="btn btn-ghost w-100 py-2 btn-add-cart" 
+                    data-id="{{ product.id }}" data-name="{{ product.name }}" 
+                    data-price="{{ product.display_price }}" data-image="{{ product.image or '' }}"
+                    {% if product.is_sold %}disabled{% endif %}>
+                <i class="bi bi-bag-plus me-2"></i> Add to Cart Instead
+            </button>
+        {% else %}
+            <!-- NORMAL WHATSAPP / CART MODE -->
+            {% if not product.is_sold %}
+              <button class="btn btn-grad w-100 py-3 mb-2 btn-add-cart" 
+                      data-id="{{ product.id }}" data-name="{{ product.name }}" 
+                      data-price="{{ product.display_price }}" data-image="{{ product.image or '' }}">
+                <i class="bi bi-bag-plus me-2"></i> Add to Cart
+              </button>
+            {% else %}
+              <button class="btn btn-grad w-100 py-3 mb-2" disabled style="opacity: 0.6; cursor: not-allowed;">
+                <i class="bi bi-x-circle me-2"></i> Sold Out
+              </button>
+            {% endif %}
+            
+            <a href="https://wa.me/923346015655?text={{ ('Hi! I am interested in ' ~ product.name ~ ' (' ~ product.display_price ~ ') from Shakeel Collection.') | urlencode }}" 
+               target="_blank" class="btn btn-ghost w-100 py-3">
+              <i class="bi bi-whatsapp me-2"></i> {% if product.is_sold %}Ask About This Item{% else %}Buy on WhatsApp{% endif %}
+            </a>
         {% endif %}
 
         <!-- Trust pills -->
