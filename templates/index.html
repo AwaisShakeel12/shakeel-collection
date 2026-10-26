@@ -1395,7 +1395,7 @@
                                         %}
                                     </button>
                                     <a class="btn btn-wa"
-                                        href="https://wa.me/923346015655?text={{ ('Hi! I am interested in ' ~ product.name ~ ' (Price: ' ~ product.display_price ~ ')') | urlencode }}"
+                                        href="https://wa.me/923166141309?text={{ ('Hi! I am interested in ' ~ product.name ~ ' (Price: ' ~ product.display_price ~ ')') | urlencode }}"
                                         target="_blank" title="Inquire on WhatsApp">
                                         <i class="bi bi-whatsapp"></i>
                                     </a>
@@ -1467,7 +1467,7 @@
                                 <li><i class="bi bi-check-circle-fill"></i> 2-year warranty on every jewelry piece</li>
                                 <li><i class="bi bi-check-circle-fill"></i> Personal styling consultation included</li>
                             </ul>
-                            <a href="https://wa.me/923346015655?text=Hi!%20I%20would%20like%20to%20consult%20with%20an%20NS%20Collection%20Stylist."
+                            <a href="https://wa.me/923166141309?text=Hi!%20I%20would%20like%20to%20consult%20with%20an%20NS%20Collection%20Stylist."
                                 target="_blank" class="btn btn-grad mt-4">Talk to Stylist <i
                                     class="bi bi-arrow-right ms-2"></i></a>
                         </div>
@@ -1656,7 +1656,7 @@
     </footer>
 
     <!-- Floating WhatsApp -->
-    <a href="https://wa.me/923346015655" target="_blank" class="wa-float" title="Chat on WhatsApp">
+    <a href="https://wa.me/923166141309" target="_blank" class="wa-float" title="Chat on WhatsApp">
         <i class="bi bi-whatsapp"></i>
     </a>
 
@@ -1843,7 +1843,7 @@
                         return `• ${c.name} x${q} — PKR ${(p * q).toLocaleString()}`;
                     }).join('%0A') +
                     `%0A%0ATotal: PKR ${Math.round(cart.reduce((s, c) => s + parsePrice(c.price) * (parseInt(c.quantity || c.qty) || 1), 0)).toLocaleString()}`;
-                window.open(`https://wa.me/923346015655?text=${msg}`, '_blank');
+                window.open(`https://wa.me/923166141309?text=${msg}`, '_blank');
             } finally {
                 if (btn) {
                     btn.disabled = false;
