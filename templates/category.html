@@ -241,7 +241,7 @@
         <p class="sub mt-3 reveal">Latest arrivals in this category — handpicked by our designers and delivered worldwide with Shakeel Collection's signature luxury experience.</p>
         <div class="d-flex gap-3 flex-wrap reveal">
           <a href="#collection" class="btn btn-grad">Browse Collection <i class="bi bi-arrow-down ms-2"></i></a>
-          <a href="https://wa.me/923346015655?text=Hi!%20I%20would%20like%20to%20consult%20with%20an%20NS%20Collection%20Stylist." target="_blank" class="btn btn-ghost"><i class="bi bi-whatsapp me-2"></i>Ask a Stylist</a>
+          <a href="https://wa.me/923166141309?text=Hi!%20I%20would%20like%20to%20consult%20with%20an%20NS%20Collection%20Stylist." target="_blank" class="btn btn-ghost"><i class="bi bi-whatsapp me-2"></i>Ask a Stylist</a>
         </div>
         {% if data.products %}
         <div class="count-chip reveal">
@@ -346,7 +346,7 @@
                 </button>
               {% endif %}
               <a class="btn btn-wa" target="_blank" title="Order on WhatsApp"
-                 href="https://wa.me/923346015655?text={{ ('Hi! I am interested in ' ~ product.name ~ ' (' ~ product.display_price ~ ') from Shakeel Collection.') | urlencode }}">
+                 href="https://wa.me/923166141309?text={{ ('Hi! I am interested in ' ~ product.name ~ ' (' ~ product.display_price ~ ') from Shakeel Collection.') | urlencode }}">
                 <i class="bi bi-whatsapp"></i>
               </a>
             </div>
@@ -480,7 +480,7 @@
 </footer>
 
 <!-- Floating WhatsApp -->
-<a href="https://wa.me/923346015655?text=Hi!%20I'm%20browsing%20the%20{{ data.category.name }}%20collection%20on%20NS%20Collection." target="_blank" class="wa-float" title="Chat on WhatsApp">
+<a href="https://wa.me/923166141309?text=Hi!%20I'm%20browsing%20the%20{{ data.category.name }}%20collection%20on%20NS%20Collection." target="_blank" class="wa-float" title="Chat on WhatsApp">
   <i class="bi bi-whatsapp"></i>
 </a>
 
@@ -604,7 +604,7 @@ async function checkoutWhatsApp(){
     msg+='• '+c.name+' x'+q+' — PKR '+(p*q).toLocaleString()+'\n';
   });
   msg+='\nTotal: PKR '+Math.round(total).toLocaleString();
-  window.open('https://wa.me/923346015655?text='+encodeURIComponent(msg),'_blank');
+  window.open('https://wa.me/923166141309?text='+encodeURIComponent(msg),'_blank');
 }
 renderCart();
 
